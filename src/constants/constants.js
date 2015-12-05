@@ -105,3 +105,8 @@ exports.TYPES.NULL = 'L';
 exports.TYPES.TRUE = 'T';
 exports.TYPES.FALSE = 'F';
 exports.TYPES.UNDEFINED = 'U';
+
+exports.CLUSTER = {};
+exports.CLUSTER.EXPLORE = 'EXPLORE';
+exports.CLUSTER.NOTIFY = 'NOTIFY';
+exports.CLUSTER.CLOSED = 'CLOSED';

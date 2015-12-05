@@ -16,7 +16,8 @@ options = {
 	permissionHandler: require( '../mocks/permission-handler-mock' ),
 	logger: { log: function( logLevel, event, msg ){ lastLoggedMessage = msg; } },
 	maxAuthAttempts: 3,
-	logInvalidAuthData: true
+	logInvalidAuthData: true,
+	messageConnector: new (require( '../mocks/message-connector-mock' ))()
 };
 
 connectionEndpoint = new ConnectionEndpoint( options );
@@ -26,7 +27,6 @@ connectionEndpoint.onMessage = function( socket, message ){
 };
 
 describe( 'validates HTTPS server conditions', function() {
-
 	var options = null;
 	var error = null;
 	var connectionEndpointValidation = null;
@@ -34,7 +34,8 @@ describe( 'validates HTTPS server conditions', function() {
 	beforeEach(function() {
 		sslOptions = {
 			permissionHandler: require( '../mocks/permission-handler-mock' ),
-			logger: { log: function( logLevel, event, msg ){} }
+			logger: { log: function( logLevel, event, msg ){} },
+			messageConnector: new (require( '../mocks/message-connector-mock' ))()
 		};
 
 		spyOn(httpMock, 'createServer').andCallThrough();

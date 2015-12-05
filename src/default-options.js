@@ -61,6 +61,8 @@ exports.get = function() {
 		rpcTimeout: 10000,
 		cacheRetrievalTimeout: 1000,
 		storageRetrievalTimeout: 2000,
-		dependencyInitialisationTimeout: 2000
+		dependencyInitialisationTimeout: 2000,
+		clusterHeartbeatIn: 60000,
+		clusterHeartbeatOut: 55000
 	};
 };

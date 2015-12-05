@@ -6,8 +6,13 @@ var Deepstream = require( './src/deepstream.io' );
 	redis = require( 'deepstream.io-msg-redis' );
 
 
+
 var deepstream = new Deepstream();
 
+ //deepstream.set( 'host', process.env.IP );
+ deepstream.set( 'port', 6050 );
+
+ deepstream.set( 'tcpPort', 6051 );
 //deepstream.set( 'sslKey', fs.readFileSync( './private.key', 'utf-8' ) );
 //deepstream.set( 'sslCert', fs.readFileSync( './public.cert', 'utf-8' ) );
 
@@ -38,17 +43,17 @@ var deepstream = new Deepstream();
 // 	}
 // });
 
-// var redisOptions = {
-// 	// Remote
-// 	port: 15010,
-// 	host: 'pub-redis-15010.us-east-1-4.4.ec2.garantiadata.com',
-// 	password: 'YYY'
+var redisOptions = {
+	// // Remote
+	// port: 15010,
+	// host: 'pub-redis-15010.us-east-1-4.4.ec2.garantiadata.com',
+	// password: 'YYY'
 	
 
-// 	//Local
-// 	// port: 6379,
-// 	// host: 'localhost'
-// }; 
+	//Local
+	port: 6379,
+	host: 'localhost'
+}; 
 
 // deepstream.set( 'cache', new redis.CacheConnector( redisOptions ));
 
@@ -58,3 +63,7 @@ deepstream.set( 'messageConnector', new redis({
 }));
 
 deepstream.start();
+
+setTimeout( function() {
+	deepstream.stop();
+}, 5000 );

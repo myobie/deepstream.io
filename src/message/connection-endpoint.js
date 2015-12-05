@@ -1,4 +1,5 @@
 var C = require( '../constants/constants' ),
+	Cluster = require( './cluster' ),
 	messageParser = require( './message-parser' ),
 	SocketWrapper = require( './socket-wrapper' ),
 	engine = require('engine.io'),
@@ -45,6 +46,7 @@ var ConnectionEndpoint = function( options, readyCallback ) {
 		this._server = http.createServer();
 	}
 	this._server.listen( this._options.port, this._options.host, this._checkReady.bind( this, ENGINE_IO ) );
+	
 	this._engineIo = engine.attach( this._server );
 	this._engineIo.on( 'error', this._onError.bind( this ) );
 	this._engineIo.on( 'connection', this._onConnection.bind( this, ENGINE_IO ) );
@@ -54,6 +56,8 @@ var ConnectionEndpoint = function( options, readyCallback ) {
 	this._tcpEndpoint = new TcpEndpoint( options, this._checkReady.bind( this, TCP_ENDPOINT ) );
 	this._tcpEndpoint.on( 'error', this._onError.bind( this ) );
 	this._tcpEndpoint.on( 'connection', this._onConnection.bind( this, TCP_ENDPOINT ) );
+
+	this._cluster = new Cluster( options, this._server,this._engineIo, this._tcpEndpoint );
 
 	this._timeout = null;
 	this._msgNum = 0;
@@ -99,6 +103,8 @@ ConnectionEndpoint.prototype.close = function() {
 	// Close the tcp server
 	this._tcpEndpoint.on( 'close', this._checkClosed.bind( this ) );
 	this._tcpEndpoint.close();
+
+	this._cluster.close();
 };
 
 /**
